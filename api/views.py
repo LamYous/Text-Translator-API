@@ -11,16 +11,12 @@ class TranslateTextView(APIView):
         serializer = TranslationRequestSerializer(data=data)
         if serializer.is_valid():
             text = serializer.validated_data['text']
-            target_lang = serializer.validated_data['target_lang']
+            target_language = serializer.validated_data['target_language']
 
             try:
-                translated_data = TranslationSrevice.translate_text[text, target_lang]
+                translated_data = TranslationSrevice.translate_text(text, target_language)
                 return Response(translated_data, status=status.HTTP_200_OK)
             except Exception as e:
                 return Response({"error": f"Error Mappened: {str(e)}"}, status=status.HTTP_400_BAD_REQUEST)
             
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            
-        
-        
-        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)           
